@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Weather App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Weather app built with HTML, CSS, and JavaScript" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="weather-app">
+      <h1>Weather App</h1>
+
+      <form id="weather-form">
+        <input
+          type="text"
+          id="city-input"
+          placeholder="Enter city name"
+          aria-label="Enter city name"
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      <div class="unit-toggle">
+        <button id="toggle-unit">°F / °C</button>
+      </div>
+
+      <p id="status" role="status" aria-live="polite"></p>
+
+      <div class="weather-card">
+        <h2 id="city-name">--</h2>
+        <div id="weather-icon" class="weather-icon">☀️</div>
+        <p id="temperature">--°</p>
+        <p id="description">--</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
