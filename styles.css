@@ -44,6 +44,7 @@
 
 #city-input {
     flex: 1;
+    min-width: 0;
     padding: 12px 14px;
     border-radius: 12px;
     border: none;
@@ -126,4 +127,29 @@
     color: rgba(255, 255, 255, 0.75);
     margin-top: 6px;
     font-size: 0.95rem;
+}
+
+@media (max-width: 520px) {
+    .weather-app {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    #weather-form {
+        flex-direction: column;
+    }
+
+    #city-input,
+    #weather-form button,
+    #toggle-unit {
+        width: 100%;
+    }
+    
+    #temperature {
+        font-size: 2.2rem;
+    }
+
+    .weather-card {
+        padding: 18px;
+    }
 }
