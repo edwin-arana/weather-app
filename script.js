@@ -1,4 +1,5 @@
 let currentUnit = "F";
+let lastSearchedLocation = null;
 const weatherApp = document.querySelector(".weather-app");
 const form = document.getElementById("weather-form");
 const cityInput = document.getElementById("city-input");
@@ -40,6 +41,12 @@ async function getCoordinates(city) {
 
         const location = data.results[0];
 
+        lastSearchedLocation = {
+            name: location.name,
+            latitude: location.latitude,
+            longitude: location.longitude
+        };
+
         console.log("Coordinates found:", location.latitude, location.longitude);
 
         getWeather(location.latitude, location.longitude, location.name);
@@ -51,12 +58,14 @@ async function getCoordinates(city) {
 
 async function getWeather(lat, lon, cityName) {
     try {
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit`           
-        );
+        const unit = currentUnit === "F" ? "fahrenheit" : "celsius";
+        const response = await fetch(
+  `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=${unit}`
+);
 
         const data = await response.json();
 
-        if (!response.ok) {
+        if (!response.ok || !data.current) {
             throw new Error("Could not fetch weather data.");
         }
 
@@ -72,12 +81,6 @@ async function getWeather(lat, lon, cityName) {
     } catch (error) {
         showError(error.message);
     }
-
-    const unit = currentUnit === "F" ? "fahrenheit" : "celsius";
-
-    const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=${unit}`
-    );
 }
 
 
@@ -176,9 +179,11 @@ const toggleBtn = document.getElementById("toggle-unit");
 toggleBtn.addEventListener("click", () => {
     currentUnit = currentUnit === "F" ? "C" : "F";
 
-    //re-fetch using last searched city
-    const city = cityInput.value.trim();
-    if (city !== "") {
-        getCoordinates(city);
+    if (lastSearchedLocation) {
+        getWeather(
+           lastSearchedLocation.latitude,
+           lastSearchedLocation.longitude,
+           lastSearchedLocation.name 
+        );
     }
 });
